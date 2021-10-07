@@ -1,0 +1,66 @@
+﻿@model IEnumerable<CrudUsingAjax.Models.Organisation>
+
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+<button class="btn btn-info" id="btnRefresh" style="float: right;"> Refresh </button>
+
+<script>
+    $(document).ready(function () {
+         function getData(){
+             $.ajax({
+                type: "GET",
+                url: '@Url.Action("List", "Organisation")',
+                success: function (data) {
+                    setInterval("btnRefresh()", 2000);
+                    var tr = "";
+                    for (let i = 0; i < data.length; i++)
+                    {
+                        tr += "<tr>";
+                        tr += "<td>" + data[i].organisationId + "</td>";
+                        tr += "<td>" + data[i].organisationName + "</td>";
+                        tr += "<td>" + data[i].organisationAddress + "</td>";
+                        tr += "</tr>";
+                    }
+                    $("#Output").html(tr);
+                }
+
+             });
+        }
+
+        getData();
+        $("#btnRefresh").on("click", function () {
+            getData();
+        })
+    });
+
+</script>
+
+<div class="text-center">
+
+    <h1 class="display-4">Organisation List</h1>
+
+    <table class="table table-bordered">
+
+        <tr class="table-head">
+
+            <th> OrganisationId</th>
+
+            <th> OrganisationName</th>
+
+            <th> OrganisationAddress</th>
+
+        </tr>
+
+        <tbody id="Output">
+        </tbody>
+    </table>
+
+</div>
+

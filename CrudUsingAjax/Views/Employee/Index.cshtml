@@ -1,0 +1,75 @@
+﻿@model IEnumerable<CrudUsingAjax.Models.Employee>
+
+@{
+    ViewData["Title"] = "Index";
+
+}
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+<button class="btn btn-info" id="btnRefresh" style="float: right;"> Refresh Page</button>
+
+<script>
+
+        $(document).ready(function () {
+            function getData() {
+                 $.ajax({
+                     type: "GET",
+                     url: '@Url.Action("List", "Employee")',
+                     success: function (data) {
+                     var tr = "";
+                     for (let i = 0; i < data.length; i++)
+                     {
+                        tr += "<tr>";
+                        tr += "<td>" + data[i].empId + "</td>";
+                        tr += "<td>" + data[i].employeeName + "</td>";
+                        tr += "<td>" + data[i].organisationId + "</td>";
+                        tr += "<td>" + data[i].emailId + "</td>";
+                        tr += "<td>" + data[i].mobile + "</td>";
+                        tr += "<td>" + data[i].gender + "</td>";
+                        tr += "<td>" + data[i].age + "</td>";
+                        tr += "</tr>";
+                     }
+                         $("#Output").html(tr);
+                     }
+
+                 });
+            }
+        getData();
+        $("#btnRefresh").on("click", function () {
+            getData();
+        })
+        });
+</script>
+
+<div class="text-center">
+
+    <h1 class="display-4">Employee List</h1>
+
+    <table class="table table-bordered">
+
+        <tr class="table-head">
+
+            <th> EmployeeId</th>
+
+            <th> EmployeeName</th>
+
+            <th> OrganisationId</th>
+
+            <th>EmailId</th>
+
+            <th>Mobile</th>
+
+            <th>Gender</th>
+
+            <th>Age</th>
+
+        </tr>
+
+        <tbody id="Output">
+        </tbody>
+    </table>
+
+</div>
+
